@@ -1,0 +1,42 @@
+language: cpp
+
+matrix:
+  include:
+    - dist: xenial
+      compiler: gcc
+    - os: osx
+      compiler: clang
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
+# This takes a lot of time and is not essentila for CI:  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; brew upgrade; fi
+#  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get --allow-unauthenticated install libssl-dev; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openssl; fi
+
+script:
+  - mkdir -p build
+  - cd build
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..; fi
+  - cmake --build .
+
+notifications:
+  email: false
+
+git:
+  depth: 10
+
+#env:
+#  - secure: "Put the result of `travis encrypt COVERITY_SCAN_TOKEN=<the actual token> here."
+#addons:
+#  coverity_scan:
+#    project:
+#      name: "raffmont/signalk-server-cpp"
+#      description: "signalk-server-cpp"
+#    notification_email: whoever@should.get
+#    build_command_prepend: "mkdir -p build; cd build; cmake ..; make clean"
+#    build_command: "make"
+#    branch_pattern: coverity_scan
