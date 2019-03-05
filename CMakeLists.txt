@@ -62,7 +62,7 @@ ExternalProject_Add(spdlog
 
 ExternalProject_Add(marnav
         GIT_REPOSITORY https://github.com/raffmont/marnav.git
-        CMAKE_ARGS -DENABLE_STATIC=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_STATIC=ON -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DENABLE_EXAMPLES=OFF ENABLE_TESTS=OFF -DENABLE_TOOLS=OFF
+        CMAKE_ARGS -DCMAKE_BUILD_TYPE=Release -DENABLE_STATIC=ON -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DENABLE_EXAMPLES=OFF ENABLE_TESTS=OFF -DENABLE_TOOLS=OFF -DBUILD_TESTING=OFF
         TIMEOUT 360
         )
 
@@ -73,7 +73,7 @@ ExternalProject_Add(marnav
 ExternalProject_Add(json
         GIT_TAG v3.2.0
         GIT_REPOSITORY https://github.com/nlohmann/json.git
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DBUILD_TESTING=OFF
         TIMEOUT 360
         )
 
@@ -81,14 +81,14 @@ ExternalProject_Add(json
 
 ExternalProject_Add(variant
         GIT_REPOSITORY https://github.com/mpark/variant.git
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DBUILD_TESTING=OFF
         TIMEOUT 360
         )
 
 #### libuv
 
 ExternalProject_Add(libuv
-        GIT_REPOSITORY https://github.com/libuv/libuv.git
+        GIT_REPOSITORY https://github.com/libuv/libuv.git -DBUILD_TESTING=OFF
         GIT_TAG v1.x
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
         TIMEOUT 360
@@ -99,7 +99,7 @@ ExternalProject_Add(libuv
 
 ExternalProject_Add(uvw
         GIT_REPOSITORY https://github.com/skypjack/uvw.git
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DBUILD_TESTING=OFF
         TIMEOUT 360
         )
 
@@ -109,7 +109,7 @@ ExternalProject_Add(uWebSockets
         GIT_REPOSITORY https://github.com/raffmont/uWebSockets.git
         TIMEOUT 360
         BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND echo Noghing
+        CONFIGURE_COMMAND echo Nothing
         BUILD_COMMAND make PREFIX=${EXTERNAL_INSTALL_LOCATION} CPPFLAGS=-I${EXTERNAL_INSTALL_LOCATION}/include/ CFLAGS=-I${OPENSSL_INCLUDE_DIR}
         INSTALL_COMMAND make PREFIX=${EXTERNAL_INSTALL_LOCATION} install
         )
