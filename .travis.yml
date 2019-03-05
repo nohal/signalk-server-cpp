@@ -3,7 +3,15 @@ language: cpp
 matrix:
   include:
     - dist: xenial
+      env: COMPILER=g++-6
       compiler: gcc
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          packages:
+          - gcc-6
+          - g++-6
     - os: osx
       compiler: clang
 
@@ -19,7 +27,7 @@ install:
 script:
   - mkdir -p build
   - cd build
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake ..; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake -DCMAKE_CXX_COMPILER=${COMPILER} ..; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..; fi
   - cmake --build .
 
